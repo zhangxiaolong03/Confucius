@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
@@ -23,7 +24,7 @@ import com.github.sarxos.webcam.util.ImageUtils;
 
 public class EagleEye extends JFrame{
 	
-	protected CaptureThread capThread = null;
+	protected static CaptureRunnable capRunnable;
 	/*
 	 * 构造
 	 * */
@@ -33,9 +34,7 @@ public class EagleEye extends JFrame{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-    
+	}    
     /*
      * 绘制frame窗口
      * 对窗口中的按钮进行监听
@@ -43,13 +42,13 @@ public class EagleEye extends JFrame{
     public void createFrame(){
     	
     	final JFrame window = new JFrame("连续抓拍");
-    	capThread = new CaptureThread();//实例化线程类
-    	
+    	capRunnable = new CaptureRunnable();//实例化线程类
+    	final Thread thread = new Thread(capRunnable);
         window.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e)
             {
-                capThread.getWebcam().close();
+                capRunnable.getWebcam().close();
                 window.dispose();
             }
         });
@@ -57,7 +56,7 @@ public class EagleEye extends JFrame{
         // window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final JButton startCapture = new JButton("开始拍照");
         JButton stopCapture = new JButton("停止拍照");
-        window.add(capThread.getWebcamPanel(), BorderLayout.CENTER);
+        window.add(capRunnable.getWebcamPanel(), BorderLayout.CENTER);
         window.add(startCapture, BorderLayout.WEST);
         window.add(stopCapture,BorderLayout.EAST);
         window.setResizable(true);
@@ -69,13 +68,11 @@ public class EagleEye extends JFrame{
             public void actionPerformed(ActionEvent e)
             {
                 //判断线程对象是否为空，如果为空则创建新的线程对象并启动
-            	if(capThread != null){            	
-            		capThread.start();//点击【开始】按钮启动拍照的thread                
-                }else{         	
-                	new Thread(capThread).start();
-                	//capThread = new CaptureThread(); 
-                }
-                
+            	if(thread.isAlive()){	
+            		thread.start();
+            	}else{
+            		new Thread(capRunnable).start();
+            	}
 //                SwingUtilities.invokeLater(new Runnable() {
 //
 //                    public void run()
@@ -92,21 +89,21 @@ public class EagleEye extends JFrame{
         //建立stopCapture按钮的监听
         stopCapture.addActionListener(new ActionListener() {
 			
-        	@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
+        	public void actionPerformed(ActionEvent e) {
         		//判断线程对象是否为空，非空则中断线程
-				if(capThread != null){
-					capThread.interrupt();
-				}	
-				capThread = null;
+//				if(thread.isAlive()){
+//					thread.interrupt();
+//				}	
+				thread.interrupt();
 			}
 		});
     }
     
-    public static void main(String[] args) throws IOException
+    
+    @SuppressWarnings("deprecation")
+	public static void main(String[] args) throws IOException
     {
     	new EagleEye().show();
-    	
     }
 
 

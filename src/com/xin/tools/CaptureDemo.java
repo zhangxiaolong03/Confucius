@@ -60,7 +60,7 @@ public class CaptureDemo {
 	            {
 	            	currentTime = dFormat.format(System.currentTimeMillis());
 	                startCapture.setEnabled(false);
-	                String fileName = "D://" + currentTime;
+	                String fileName = "E://" + currentTime;
 	                WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_PNG);
 	                SwingUtilities.invokeLater(new Runnable() {
 
