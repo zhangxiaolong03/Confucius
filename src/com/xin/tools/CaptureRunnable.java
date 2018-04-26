@@ -1,10 +1,6 @@
 package com.xin.tools;
 
 import java.text.SimpleDateFormat;
-import java.io.File;
-
-import org.omg.CORBA.Request;
-
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamUtils;
@@ -13,28 +9,24 @@ import com.github.sarxos.webcam.util.ImageUtils;
 public class CaptureRunnable implements Runnable {
 
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH-mm-ss-S");
-	private static String currentTime;
 	private static final String PICTURE_URL = "../../PICTURES";//使用相对路径存储抓取的图片
 	private static String fileName;
 	private Webcam webcam = Webcam.getDefault();
 	private WebcamPanel panel = new WebcamPanel(webcam);
+	private boolean flag;//控制线程循环的开关
+	public static Base base = new Base();//Base工具类实例化
 	
 	public CaptureRunnable(){
-		panel = new WebcamPanel(webcam);
-		panel.setImageSizeDisplayed(true);
+		//panel.setImageSizeDisplayed(true);
 		panel.setMirrored(true);
-		fileIsExists(PICTURE_URL);//构造时调用，保证存储路径可写
+		panel.setFPSDisplayed(true);
+		base.fileIsExists(PICTURE_URL);//保证存储路径可写
 	}
-
-	/*
-	 * 启动拍照
-	 * */
+	//调用线程时启动拍照，直到线程停止
 	public void run(){	
-		//调用线程时启动拍照，直到线程停止
-		while(true){
-			currentTime = dateFormat.format(System.currentTimeMillis());//获取当前系统时间并格式化
-			fileName = PICTURE_URL + currentTime;//存放图片
-			WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_PNG);
+		while(flag){
+			fileName = dateFormat.format(System.currentTimeMillis());//存储的文件名称是格式化后的当前系统时间
+			WebcamUtils.capture(webcam,base.filePath(PICTURE_URL,fileName+".png"));			
 		}
 	}
 	//获取实例对象引用
@@ -44,18 +36,9 @@ public class CaptureRunnable implements Runnable {
 	public WebcamPanel getWebcamPanel(){
 		return this.panel;
 	}
-	
-	//判断文件路径||文件是否存在，不存在时创建文件路径
-	public static boolean fileIsExists(String path) {
-		File file = new File(path);
-		if(!file.exists()) {
-			file.mkdirs();
-			System.out.println("文件不存在，新建一个。");
-			return true;
-		}else {
-			System.out.println("文件已存在："+path);
-			System.out.println("当前工程路径:"+System.getProperty("user.dir"));
-			return true;
-		}
+	//设置线程执行标记
+	public boolean setFlag(boolean flag){
+		this.flag = flag;
+		return flag;
 	}
 }
