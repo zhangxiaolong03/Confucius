@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;//读取文件
 import javax.swing.ImageIcon;//显示图片
@@ -39,21 +40,43 @@ public class EagleEye extends JFrame {
 	protected static CaptureRunnable capRunnable;
 	protected static Thread thread;
 	private JPanel componentsPanel = new JPanel();
-	private JButton startCapture,stopCapture;//窗口中的按钮控件
+	private JButton startCapture,stopCapture,btnSelectFirst,btnSelectLast;
+	private JLabel jlbSelectFirst,jlbSelectLast;
 	
 	public EagleEye() {
 		try {
 			createFrame();// 调用Frame
+			//initFrame();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	//---------使用GridBagConstraints绘制窗口以及布局---------
+//------------------------使用GridBagConstraints绘制窗口以及布局---------------------------↓
+	JButton buttonStart,buttonStop,buttonCalc;
+	JLabel labelPicture01,labelPicture02;
+	
 	public void initFrame(){
+		buttonStart = new JButton("开始");
+		buttonStop = new JButton("停止");
+		labelPicture01 = new JLabel();
 		
+		capRunnable = new CaptureRunnable();// 线程类CaptureRunnable
+		thread = new Thread(capRunnable);
+		
+		this.setTitle("高速相机 v2.0");
+		this.setResizable(true);
+		this.setSize(1024, 2048);
+		this.setLocationRelativeTo(null);
+//		this.add(buttonStart);
+//		this.add(buttonStop);
+//		this.add(labelPicture01);
+		this.add(labelPicture02);
+		labelPicture01.setIcon(new ImageIcon("D:/PICTURES/20180424_14-46-54-216.png"));
+		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 	}
-	
+//--------------------------------------↑↑↑↑↑↑↑↑↑↑---------------------------------------↑	
 	
 	// 绘制窗口,监听按钮
 	public void createFrame() {	
@@ -61,19 +84,30 @@ public class EagleEye extends JFrame {
 		//startCapture.setBounds(new Rectangle(500,500, 150, 30));
 		stopCapture = new JButton("\u505c\u6b62");//"停止"
 		//stopCapture.setBounds(700,500, 150, 30);
+		btnSelectFirst = new JButton("选择");
+		btnSelectFirst.setBounds(700,600,150,30);
+		jlbSelectFirst = new JLabel("第一帧");	
+		jlbSelectFirst.setBounds(500,600,150,30);
+		btnSelectLast = new JButton("选择");
+		jlbSelectLast = new JLabel("最后帧");
 		
+
 		capRunnable = new CaptureRunnable();// 线程类CaptureRunnable
 		thread = new Thread(capRunnable);
 		
 		
 		this.setTitle("高速相机 v1.0");
 		this.setResizable(true);
-		this.setSize(1024, 2048);
+		this.setSize(1024, 1024);
 		this.setLocationRelativeTo(null);
 		this.add(componentsPanel,BorderLayout.EAST);
 		this.add(capRunnable.getWebcamPanel(),BorderLayout.WEST);
 		componentsPanel.add(startCapture);
 		componentsPanel.add(stopCapture);
+		componentsPanel.add(jlbSelectFirst);
+		componentsPanel.add(jlbSelectLast);
+		componentsPanel.add(btnSelectFirst);
+		componentsPanel.add(btnSelectLast);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//setUpUIComponent();
 		//setUpEventListener();

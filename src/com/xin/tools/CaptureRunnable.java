@@ -9,7 +9,7 @@ import com.github.sarxos.webcam.util.ImageUtils;
 public class CaptureRunnable implements Runnable {
 
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH-mm-ss-S");
-	private static final String PICTURE_URL = "../../PICTURES";//使用相对路径存储抓取的图片
+	public final String PICTURE_URL = "../../PICTURES";//使用相对路径存储抓取的图片
 	private static String fileName;
 	private Webcam webcam = Webcam.getDefault();
 	private WebcamPanel panel = new WebcamPanel(webcam);
