@@ -17,7 +17,6 @@ public class CaptureRunnable implements Runnable {
 	public static Base base = new Base();//Base工具类实例化
 	
 	public CaptureRunnable(){
-		//panel.setImageSizeDisplayed(true);
 		panel.setMirrored(true);
 		panel.setFPSDisplayed(true);
 		base.fileIsExists(PICTURE_URL);//保证存储路径可写
