@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamUtils;
-import com.github.sarxos.webcam.util.ImageUtils;
 
 public class CaptureRunnable implements Runnable {
 
