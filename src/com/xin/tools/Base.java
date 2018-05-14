@@ -1,6 +1,11 @@
 package com.xin.tools;
 
 import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.junit.Test;
 
 /*
@@ -87,12 +92,41 @@ public class Base {
 			
 		}else{
 			//如果是两个合法文件，计算两张图片的时间差
-			calculateResult = (hhLastPic-hhFirstPic)*60*60*1000
-							+ (mmLastPic-mmFirstPic)*60*1000
+			calculateResult = (hhLastPic-hhFirstPic)*60*60*1000  //小时 换算 毫秒
+							+ (mmLastPic-mmFirstPic)*60*1000  //分钟 换算 毫秒
 							+ ((ssLastPic*1000)+msLastPic)-((ssFirstPic*1000)+msFirstPic);//将 秒&&毫秒 合并计算
 			System.out.println("总共用时："+calculateResult+"毫秒");		
 		}
 		return calculateResult;
+	}
+	
+	/*
+	 * 文件选择器
+	 * 实现文件选择功能
+	 * 过滤文件格式
+	 * 处理异常
+	 * @return String 文件名
+	 * */
+	public String[] fileChooser(){
+		JFileChooser chooser = new JFileChooser(new CaptureRunnable().PICTURE_URL);//默认打开图片保存路径
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG格式图片", "png");
+		chooser.setFileFilter(filter);//过滤，只显示PNG格式文件
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		String[] fileAttribute = new String[2];//数组保存文件path、name
+		int returnState = chooser.showOpenDialog(null);//文件选择的状态
+		System.out.println("returnState == "+returnState);
+		if(returnState == JFileChooser.APPROVE_OPTION){ 
+			File file = chooser.getSelectedFile();
+			String name = file.getName().toString();
+			String path = file.getPath().toString();
+			fileAttribute[0] = name;
+			fileAttribute[1] = path;
+		}else {
+			chooser.cancelSelection();
+			fileAttribute[0] = null;
+			fileAttribute[1] = null;
+		}
 		
+		return fileAttribute;
 	}
 }

@@ -28,14 +28,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.LabelUI;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPanel;
-import com.github.sarxos.webcam.WebcamResolution;
-import com.github.sarxos.webcam.WebcamUtils;
-import com.github.sarxos.webcam.util.ImageUtils;
-
 /*
  * @description 界面框架，进行前端交互
  * @author zhangxiaolong
@@ -51,6 +43,7 @@ public class EagleEye extends JFrame {
 				 ,jlbPicture_1,jlbPicture_2,jlbUseless;
 	public JFileChooser fileChooser;
 	public String firstPicName,lastPicName;
+	public static Base base = new Base();
 	
 	public EagleEye() {
 		try {
@@ -146,15 +139,16 @@ public class EagleEye extends JFrame {
 		//建立btnSelectFirst按钮的监听
 		btnPicture_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fileChooser = new JFileChooser();
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				fileChooser.showDialog(new JLabel(), "选择图片");
-				File file = fileChooser.getSelectedFile();
-				firstPicName = file.getName().toString();
-				jlbPicturePath_1.setText(firstPicName.toString());
-				ImageIcon imageIcon = new ImageIcon(file.getPath().toString());//读取图片在label中显示
-				imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));//图片等比缩放
-				jlbPicture_1.setIcon(imageIcon);
+				String[] fileAttribute = base.fileChooser();//接收fileChooser()回传的文件path、name
+				if(fileAttribute[0] != null && fileAttribute[1] != null){ //文件name、path都不能为空
+					jlbPicturePath_1.setText(fileAttribute[0]);	
+					ImageIcon imageIcon = new ImageIcon(fileAttribute[1]);
+					imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));
+					jlbPicture_1.setIcon(imageIcon);
+				}else { 
+					jlbPicturePath_1.updateUI();
+					jlbPicture_1.updateUI();
+				}
 			}		
 		});
 		//建立btnSelectLast按钮的监听
@@ -176,7 +170,7 @@ public class EagleEye extends JFrame {
 		btnCalculate.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				// 处理逻辑：判断两张图片先后顺序是否正确、是否是同一张照片
-				int calculateResult = new Base().calculateDispose(firstPicName, lastPicName);
+				int calculateResult = base.calculateDispose(firstPicName, lastPicName);
 				if(calculateResult == 0){
 					jlbCalculateResult.setText("文件不能为空，请选择文件");
 				}else if(calculateResult == -1){
