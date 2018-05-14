@@ -82,12 +82,10 @@ public class Base {
 		//判断两个文件的合法性：1.先后顺序是否正确;2.是否是同一个文件
 		
 		
-		if(hhLastPic<hhFirstPic || mmLastPic<mmFirstPic || ssLastPic<ssFirstPic){
-			System.out.println("文件顺序错误，请按先后顺序选择。");
+		if(hhLastPic<hhFirstPic || mmLastPic<mmFirstPic || ssLastPic<ssFirstPic){ //文件先后顺序错误
 			calculateResult = -1;//返回状态码，前端根据状态码进行错误提示
 			
-		}else if (hhLastPic==hhFirstPic && mmLastPic==mmFirstPic && ssLastPic==ssFirstPic && msLastPic==msFirstPic) {
-			System.out.println("两个文件不能相同，请重新选择。");
+		}else if (hhLastPic==hhFirstPic && mmLastPic==mmFirstPic && ssLastPic==ssFirstPic && msLastPic==msFirstPic) {  //文件名相同
 			calculateResult = -2;//返回状态码，前端根据状态码进行错误提示
 			
 		}else{

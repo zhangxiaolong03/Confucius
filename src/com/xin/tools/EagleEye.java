@@ -134,6 +134,7 @@ public class EagleEye extends JFrame {
 		btnStopCapture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				capRunnable.setFlag(false);// 设置线程循环：false
+				
 			}
 		});		
 		//建立btnSelectFirst按钮的监听
@@ -145,6 +146,7 @@ public class EagleEye extends JFrame {
 					ImageIcon imageIcon = new ImageIcon(fileAttribute[1]);
 					imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));
 					jlbPicture_1.setIcon(imageIcon);
+					firstPicName = fileAttribute[0];//calculateDispose()计算需要传入 文件名
 				}else { 
 					jlbPicturePath_1.updateUI();
 					jlbPicture_1.updateUI();
@@ -154,16 +156,17 @@ public class EagleEye extends JFrame {
 		//建立btnSelectLast按钮的监听
 		btnPicture_2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				fileChooser = new JFileChooser();
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				fileChooser.showDialog(new JLabel(), "选择图片");
-				File file = fileChooser.getSelectedFile();
-				lastPicName = file.getName().toString();
-				System.out.println("firstPicName是:"+firstPicName);
-				jlbPicturePath_2.setText(lastPicName);
-				ImageIcon imageIcon = new ImageIcon(file.getPath().toString());
-				imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));
-				jlbPicture_2.setIcon(imageIcon);
+				String[] fileAttribute = base.fileChooser();//接收fileChooser()回传的文件path、name
+				if(fileAttribute[0]!=null && fileAttribute[1]!=null){
+					jlbPicturePath_2.setText(fileAttribute[0]);
+					ImageIcon imageIcon = new ImageIcon(fileAttribute[1]);
+					imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));
+					jlbPicture_2.setIcon(imageIcon);
+					lastPicName = fileAttribute[0];//calculateDispose()计算需要传入 文件名
+				}else {
+					jlbPicturePath_2.updateUI();
+					jlbPicture_2.updateUI();
+				}
 			}
 		});
 		//建立btnCalculate按钮的监听
