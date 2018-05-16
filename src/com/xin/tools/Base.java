@@ -3,7 +3,6 @@ package com.xin.tools;
 import java.io.File;
 
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.junit.Test;
@@ -27,17 +26,17 @@ public class Base {
 		File file = new File(path);
 		if(!file.exists()) {
 			file.mkdirs();
-			System.out.println("文件不存在，新建了一个。");
+			System.out.println("文件不存在，俺给你新建了一个。");
 			return true;
 		}else {
-			System.out.println("文件已存在："+path);
+			System.out.println("文件已经存在："+path);
 			System.out.println("当前工程路径:"+System.getProperty("user.dir"));
 			return true;
 		}
 	}
 
 	//************更改CaptureRunnable类中的文件名称格式会导致此方法异常！！！！*************
-	/* @input 两个String类型文件名称
+	/* @param 两个String类型文件名称
 	 * @return calculateResult，int 类型计算结果/错误状态码
 	 * 过滤出文件名中的所有数字
 	 * 将时、分、秒、毫秒 按照存储的文件名格式分别截取出来
@@ -80,8 +79,6 @@ public class Base {
 		int msLastPic = Integer.parseInt(strBufferLastPic.substring(6,strBufferLastPic.length()));//截取第二个图片文件名称中的：毫秒
 
 		//判断两个文件的合法性：1.先后顺序是否正确;2.是否是同一个文件
-		
-		
 		if(hhLastPic<hhFirstPic || mmLastPic<mmFirstPic || ssLastPic<ssFirstPic){ //文件先后顺序错误
 			calculateResult = -1;//返回状态码，前端根据状态码进行错误提示
 			
@@ -99,15 +96,14 @@ public class Base {
 	}
 	
 	/*
-	 * 文件选择器
-	 * 实现文件选择功能
+	 * 文件选择器实现文件选择
 	 * 过滤文件格式
 	 * 处理异常
-	 * @return String 文件名
+	 * @return String[] 文件属性
 	 * */
 	public String[] fileChooser(){
 		JFileChooser chooser = new JFileChooser(new CaptureRunnable().PICTURE_URL);//默认打开图片保存路径
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG格式图片", "png");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("just PNG format", "png");
 		chooser.setFileFilter(filter);//过滤，只显示PNG格式文件
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		String[] fileAttribute = new String[2];//数组保存文件path、name

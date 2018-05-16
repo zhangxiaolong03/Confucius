@@ -1,21 +1,13 @@
 package com.xin.tools;
 
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Label;
-import java.awt.Rectangle;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.dnd.DropTarget;//窗体拖动
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,12 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;//读取文件
 import javax.swing.ImageIcon;//显示图片
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.plaf.LabelUI;
 
 /*
- * @description 界面框架，进行前端交互
+ * @description UI界面，进行前端交互
  * @author zhangxiaolong
  * @date 2018-4
  * */
@@ -40,7 +29,7 @@ public class EagleEye extends JFrame {
 	public JPanel componentsPanel = new JPanel();
 	public JButton btnStartCapture,btnStopCapture,btnPicture_1,btnPicture_2,btnCalculate;
 	public JLabel jlbPictureSelect_1,jlbPictureSelect_2,jlbPicturePath_1,jlbPicturePath_2,jlbCalculateResult
-				 ,jlbPicture_1,jlbPicture_2,jlbUseless;
+		,jlbPicture_1,jlbPicture_2,jlbUseless;
 	public JFileChooser fileChooser;
 	public String firstPicName,lastPicName;
 	public static Base base = new Base();
@@ -53,15 +42,19 @@ public class EagleEye extends JFrame {
 			e.printStackTrace();
 		}
 	}
-//------------------------使用GridBagConstraints绘制窗口以及布局---------------------------↓
+	/*
+	 * 初始化窗体
+	 * 1.绘制界面及控件
+	 * 2.对控件操作进行监听
+	 * 
+	 * */
 	
 	public void initFrame(){
 		this.setTitle("高速相机 v2.0");
 		this.setResizable(false);
-		this.setSize(1100, 2048);
+		this.setSize(1100, 1800);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setBackground(Color.WHITE);
 		
 		btnStartCapture = new JButton("开始抓拍");
 		btnStopCapture = new JButton("停止抓拍");
@@ -146,7 +139,7 @@ public class EagleEye extends JFrame {
 					ImageIcon imageIcon = new ImageIcon(fileAttribute[1]);
 					imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));
 					jlbPicture_1.setIcon(imageIcon);
-					firstPicName = fileAttribute[0];//calculateDispose()计算需要传入 文件名
+					firstPicName = fileAttribute[0];//calculateDispose()计算时需要传入的文件名
 				}else { 
 					jlbPicturePath_1.updateUI();
 					jlbPicture_1.updateUI();
@@ -162,7 +155,7 @@ public class EagleEye extends JFrame {
 					ImageIcon imageIcon = new ImageIcon(fileAttribute[1]);
 					imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(195, 200, Image.SCALE_DEFAULT));
 					jlbPicture_2.setIcon(imageIcon);
-					lastPicName = fileAttribute[0];//calculateDispose()计算需要传入 文件名
+					lastPicName = fileAttribute[0];//calculateDispose()计算时需要传入的文件名
 				}else {
 					jlbPicturePath_2.updateUI();
 					jlbPicture_2.updateUI();
@@ -189,7 +182,10 @@ public class EagleEye extends JFrame {
 	}
 //------------------------------↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑----------------------------↑	
 	
-	// 绘制窗口,监听按钮
+	/*
+	 * 另一个窗体
+	 * 
+	 * */
 	public void createFrame() {	
 		this.setTitle("高速相机 v1.0");
 		this.setResizable(true);
@@ -233,9 +229,6 @@ public class EagleEye extends JFrame {
 		capRunnable.getWebcamPanel().setLayout(null);
 		this.add(capRunnable.getWebcamPanel(),BorderLayout.WEST);
 		this.add(componentsPanel,BorderLayout.EAST);
-
-		//this.getContentPane().setBackground(Color.WHITE);
-
 		
 		/*
 		 * @description -----以下方法处理组件操作事件-----
@@ -273,9 +266,7 @@ public class EagleEye extends JFrame {
 		});
 	}
 	
-	
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException {
-		new EagleEye().show();
+		new EagleEye().setVisible(true);
 	}
 }
