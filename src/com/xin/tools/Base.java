@@ -78,13 +78,13 @@ public class Base {
 		int ssLastPic = Integer.parseInt(strBufferLastPic.substring(4,6));//截取第二个图片文件名称中的：秒
 		int msLastPic = Integer.parseInt(strBufferLastPic.substring(6,strBufferLastPic.length()));//截取第二个图片文件名称中的：毫秒
 
-		//判断两个文件的合法性：1.先后顺序是否正确;2.是否是同一个文件
-		if(hhLastPic<hhFirstPic || mmLastPic<mmFirstPic || ssLastPic<ssFirstPic){ //文件先后顺序错误
-			calculateResult = -1;//返回状态码，前端根据状态码进行错误提示
+		//判断两个文件的合法性：0，空文件；-1，文件先后顺序错误;-2，两个文件相同
+		if(hhLastPic<hhFirstPic || mmLastPic<mmFirstPic&&hhLastPic==hhFirstPic || ssLastPic<ssFirstPic&&mmLastPic==mmFirstPic){ //文件先后顺序错误
 			
+			calculateResult = -1;
 		}else if (hhLastPic==hhFirstPic && mmLastPic==mmFirstPic && ssLastPic==ssFirstPic && msLastPic==msFirstPic) {  //文件名相同
-			calculateResult = -2;//返回状态码，前端根据状态码进行错误提示
 			
+			calculateResult = -2;	
 		}else{
 			//如果是两个合法文件，计算两张图片的时间差
 			calculateResult = (hhLastPic-hhFirstPic)*60*60*1000  //小时 换算 毫秒
