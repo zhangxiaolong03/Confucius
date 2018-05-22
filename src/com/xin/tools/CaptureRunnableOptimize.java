@@ -9,22 +9,34 @@ import com.github.sarxos.webcam.WebcamUtils;
 public class CaptureRunnableOptimize implements Runnable{
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH-mm-ss-S");
-	public final String PICTURE_URL = "../../PICTURES";//使用相对路径存储抓取的图片
-	private static String fileName;
-	private boolean flag;//控制线程循环的开关
-	public static Base base = new Base();//Base工具类实例化
 	
-	public CaptureRunnableOptimize(){
-		base.fileIsExists(PICTURE_URL);//保证存储路径可写
+	//使用相对路径存储抓取的图片
+	public final String PICTURE_URL = "../../PICTURES";
+	private Webcam webcam;
+	private WebcamPanel panel;
+	private static String fileName;
+	
+	//控制线程循环的开关
+	private boolean flag;
+	public static Base base = new Base();
+	
+	public CaptureRunnableOptimize(Webcam webcam, WebcamPanel panel){
+		
+		//判断写的文件路径是否存在
+		base.fileIsExists(PICTURE_URL);
+		this.webcam = webcam;
+		this.panel = panel;
 	}
 	/*
 	 * 调用线程时启动拍照，直到线程停止
 	 * 
 	 * */
-	public void run(Webcam webcam, WebcamPanel panel){	
+	public void run(){	
 		while(flag){
-			fileName = dateFormat.format(System.currentTimeMillis());//存储的文件名称是格式化后的当前系统时间
-			WebcamUtils.capture(webcam,base.filePath(PICTURE_URL,fileName+".png"));			
+			
+			//存储的文件名称是格式化后的当前系统时间
+			fileName = dateFormat.format(System.currentTimeMillis());
+			WebcamUtils.capture(webcam,base.filePath(PICTURE_URL,fileName + ".png"));			
 		}
 	}
 
@@ -36,9 +48,4 @@ public class CaptureRunnableOptimize implements Runnable{
 		this.flag = flag;
 		return flag;
 	}
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
