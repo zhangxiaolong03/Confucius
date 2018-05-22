@@ -208,8 +208,6 @@ public class EagleEye extends JFrame {
 		btnStopCapture = new JButton("停止抓拍");
 		btnPicture_1 = new JButton("选择首图");
 		btnPicture_2 = new JButton("选择末图");
-//		jlbPictureSelect_1 = new JLabel("图 1",JLabel.CENTER);
-//		jlbPictureSelect_2 = new JLabel("图 2",JLabel.CENTER);
 		jlbPicturePath_1 = new JLabel();//显示选择的文件名称，默认空白
 		jlbPicturePath_2 = new JLabel();//显示选择的文件名称，默认空白
 		jlbCalculateResult = new JLabel("计算结果展示区",JLabel.CENTER);//显示计算结果，文本设置 居中
@@ -239,18 +237,14 @@ public class EagleEye extends JFrame {
 		
 		this.add(btnPicture_1).setBounds(600,90,100,50);
 		btnPicture_1.setFont(font);
-//		this.add(jlbPictureSelect_1).setBounds(810,110,45,50);
 		this.add(jlbPicturePath_1).setBounds(710,90,220,50);
 		jlbPicturePath_1.setFont(font);
-//		jlbPictureSelect_1.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		jlbPicturePath_1.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		this.add(btnPicture_2).setBounds(600,190,100,50);
 		btnPicture_2.setFont(font);
-//		this.add(jlbPictureSelect_2).setBounds(810,210,45,50);
 		this.add(jlbPicturePath_2).setBounds(710,190,220,50);
 		jlbPicturePath_2.setFont(font);
-//		jlbPictureSelect_2.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		jlbPicturePath_2.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		this.add(jlbCalculateResult).setBounds(600,245,390,60);
