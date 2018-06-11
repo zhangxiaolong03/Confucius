@@ -9,6 +9,10 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamUtils;
 
+/*
+ * 线程类，控制拍照
+ * 
+ * */
 public class CaptureRunnable implements Runnable {
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH-mm-ss-S");

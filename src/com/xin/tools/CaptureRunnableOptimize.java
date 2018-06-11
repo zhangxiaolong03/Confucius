@@ -6,6 +6,11 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamUtils;
 
+/*
+ * 线程类，控制拍照
+ * 
+ * 将 Webcam、WebcamPanel的实例化放到了frame中，方便对 Webcam、WebcamPanel的一些其他操作
+ * */
 public class CaptureRunnableOptimize implements Runnable{
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH-mm-ss-S");

@@ -23,18 +23,14 @@ public class Base {
 		return file;
 	}
 	
-	//判断文件路径||文件是否存在，不存在时创建文件路径
+	//判断文件夹是否存在，不存在时创建
 	public boolean fileIsExists(String path) {
 		File file = new File(path);
-		if(!file.exists()) {
-			file.mkdirs();
-			System.out.println("文件不存在，俺给你新建了一个。");
-			return true;
-		}else {
-			System.out.println("文件已经存在："+path);
-			System.out.println("当前工程路径:"+System.getProperty("user.dir"));
+		if(file.exists()){
 			return true;
 		}
+		file.mkdirs();
+		return true;
 	}
 
 	/* @param 两个String类型文件名称
@@ -53,7 +49,7 @@ public class Base {
 		char[] charLastPic = null;
 		
 		//判断文件是否已经选择
-		if(strFirstPic == null || strLastPic == null || strFirstPic.length()<=0 || strLastPic.length()<=0){
+		if(strFirstPic==null || strLastPic==null || strFirstPic.length()<=0 || strLastPic.length()<=0){
 			
 			//未选择文件，直接返回：0
 			calculateResult = 0;
