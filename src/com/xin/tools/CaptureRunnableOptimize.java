@@ -25,6 +25,9 @@ public class CaptureRunnableOptimize implements Runnable{
 	private boolean flag;
 	public static Base base = new Base();
 	
+	public CaptureRunnableOptimize(){
+		base.fileIsExists(PICTURE_URL);
+	}
 	public CaptureRunnableOptimize(Webcam webcam, WebcamPanel panel){
 		
 		//判断写的文件路径是否存在

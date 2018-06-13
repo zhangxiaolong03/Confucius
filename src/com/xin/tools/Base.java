@@ -7,6 +7,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.junit.Test;
 
+import com.github.sarxos.webcam.Webcam;
+
 /*
  * @description 基础工具类
  * @author zhangxiaolong

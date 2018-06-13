@@ -28,7 +28,7 @@ import com.github.sarxos.webcam.WebcamPanel;
  * */
 public class EagleEye extends JFrame {
 
-	protected static CaptureRunnable capRunnable;
+	//protected static CaptureRunnable capRunnable;
 	protected static Thread thread;
 	public JPanel componentsPanel = new JPanel();
 	public JButton btnStartCapture,btnStopCapture,btnPicture_1,btnPicture_2,btnCalculate;
@@ -37,14 +37,13 @@ public class EagleEye extends JFrame {
 	public JFileChooser fileChooser;
 	public String firstPicName,lastPicName;
 	
-	
 	public static Base base = new Base();
 	
 	public EagleEye() {
 		//启动窗体
 		try {
-			createFrame();
-			//initFrame();
+			//createFrame();
+			initFrame();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,17 +64,17 @@ public class EagleEye extends JFrame {
 		// 设置frame展示时的默认坐标轴
 		this.setLocation(150, 0);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		Webcam webcam = Webcam.getDefault();
+	
+		final CaptureRunnable runnable = new CaptureRunnable();
+		thread = new Thread(runnable);
 
 		// 设置拍摄图片分辨率
-		webcam.setViewSize(new Dimension(640, 480));
-		WebcamPanel panel = new WebcamPanel(webcam);
+		runnable.getWebcam().setViewSize(new Dimension(640, 480));
 
 		// 字体 设置
 		Font font = new Font("宋体", Font.BOLD, 15);
 		
-		//占位图
+		//缩略图框增加占位图
 		ImageIcon placeholder = new ImageIcon("images/placeholder_220x240.jpg");
 
 		btnStartCapture = new JButton("开始抓拍");
@@ -92,17 +91,11 @@ public class EagleEye extends JFrame {
 		// 两个JLabel用来显示已选择图片的缩略图
 		jlbPicture_1 = new JLabel();
 		jlbPicture_2 = new JLabel();
-
-		final CaptureRunnableOptimize capRunnableOptimize = new CaptureRunnableOptimize(
-				webcam, panel);// 线程类CaptureRunnable
-		thread = new Thread(capRunnableOptimize);
-
+		
 		this.setLayout(null);
 		this.setSize(1040, 600);
 		this.setVisible(true);
-		this.add(panel).setBounds(0, 0, 550, 550);
-		panel.setMirrored(true);
-		panel.setFPSDisplayed(true);
+		this.add(runnable.getWebcamPanel()).setBounds(0, 0, 550, 550);
 
 		this.add(btnCalculate).setBounds(940, 90, 50, 150);
 		btnCalculate.setFont(font);
@@ -144,19 +137,23 @@ public class EagleEye extends JFrame {
 		btnStartCapture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// 判断线程对象是否为空，如果为空则创建新的线程对象并启动
-				capRunnableOptimize.setFlag(true);// 设置线程循环：true
+//				capRunnableOptimize.setFlag(true);// 设置线程循环：true
+				runnable.setFlag(true);
 				if (thread.isAlive()) {
 					thread.start();
 				} else {
-					new Thread(capRunnableOptimize).start();
+//					new Thread(capRunnableOptimize).start();
+					new Thread(runnable).start();
 				}
 			}
 		});
 		// 建立stopCapture按钮的监听
 		btnStopCapture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				capRunnableOptimize.setFlag(false);// 设置线程循环：false
-
+				
+				// 设置线程循环：false
+//				capRunnableOptimize.setFlag(false);
+				runnable.setFlag(false);
 			}
 		});
 		// 建立btnSelectFirst按钮的监听
@@ -223,7 +220,7 @@ public class EagleEye extends JFrame {
 	
 	
 	/*
-	 * 另一个窗体，对UI进行优化
+	 * 另一个窗体
 	 * 
 	 * */
 	public void createFrame() {	
@@ -236,7 +233,10 @@ public class EagleEye extends JFrame {
 		this.setLocation(150, 0);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		Webcam webcam = Webcam.getDefault();
+		final Webcam webcam = Webcam.getDefault();
+		if (webcam == null) {
+			System.out.println("请检查摄像头设备是否正常！");
+		}
 		
 		//设置拍摄图片分辨率
 		webcam.setViewSize(new Dimension(640,480));
@@ -260,7 +260,7 @@ public class EagleEye extends JFrame {
 		jlbPicture_1 = new JLabel();
 		jlbPicture_2 = new JLabel();
 		
-		final CaptureRunnableOptimize capRunnableOptimize = new CaptureRunnableOptimize(webcam, panel);// 线程类CaptureRunnable
+		final CaptureRunnableOptimize capRunnableOptimize = new CaptureRunnableOptimize(webcam, panel);
 		thread = new Thread(capRunnableOptimize);
 		
 		this.setLayout(null);
@@ -319,8 +319,9 @@ public class EagleEye extends JFrame {
 		// 建立stopCapture按钮的监听
 		btnStopCapture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				capRunnableOptimize.setFlag(false);// 设置线程循环：false
 				
+				// 设置线程循环：false
+				capRunnableOptimize.setFlag(false);				
 			}
 		});		
 		//建立btnSelectFirst按钮的监听

@@ -18,9 +18,11 @@ public class CaptureRunnable implements Runnable {
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH-mm-ss-S");
 	public final String PICTURE_URL = "../../PICTURES";//使用相对路径存储抓取的图片
 	private static String fileName;
-	private Webcam webcam = Webcam.getDefault();
-	private WebcamPanel panel = new WebcamPanel(webcam);
-	private boolean flag;//控制线程循环的开关
+	
+	//控制线程循环的开关
+	private boolean flag;
+	private final Webcam webcam = Webcam.getDefault();
+	private final WebcamPanel panel = new WebcamPanel(webcam);
 	public static Base base = new Base();//Base工具类实例化
 	
 	public CaptureRunnable(){
